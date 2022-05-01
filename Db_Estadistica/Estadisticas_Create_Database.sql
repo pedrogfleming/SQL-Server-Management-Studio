@@ -22,4 +22,23 @@ UNION ALL SELECT 5, 15
 UNION ALL SELECT 6, 14
 UNION ALL SELECT 7, 4;
  
-DECLARE @Median DECIMAL(12, 2);
+DECLARE @Median DECIMAL(12, 2)
+
+CREATE FUNCTION NumbersTable (
+  @fromNumber int,
+  @toNumber int,
+  @byStep int
+) RETURNS TABLE
+RETURN (
+
+WITH CTE_NumbersTable AS (
+  SELECT @fromNumber AS i
+  UNION ALL
+  SELECT i + @byStep
+  FROM CTE_NumbersTable
+  WHERE
+  (i + @byStep) <= @toNumber
+)
+SELECT * FROM CTE_NumbersTable
+
+)
